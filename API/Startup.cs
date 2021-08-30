@@ -29,6 +29,10 @@ namespace API {
             services.AddDbContext<DBContext>(context => {
                 context.UseSqlite(Configuration.GetConnectionString("DatingApp"));
             });
+            services.AddCors(options => {
+                options.AddDefaultPolicy(policy => policy.AllowAnyHeader()
+                    .AllowAnyMethod().WithOrigins("http://localhost:4200"));
+            });
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
@@ -45,6 +49,8 @@ namespace API {
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
